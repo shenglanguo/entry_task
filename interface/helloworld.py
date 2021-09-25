@@ -16,7 +16,7 @@ def deal_request():
     student_list = [{'name': '张三', 'age': '18'}, {'name': '李四','age': '17'}, {'name': 'wangwu','age': '18'}, {'name': '张无忌','age': '22'}]
     query_list = []
     #默认返回内容
-    return_dict = {'return_code': 200, 's': 'success!', 'result': False}
+    return_dict = {'return_code': 200, 'return_info': 'success!', 'result': False}
     if request.method == "GET":
         get_name = request.args.get("name", "").strip("")
         if get_name == '' or get_name == None:
