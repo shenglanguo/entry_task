@@ -1,0 +1,75 @@
+
+config:
+    name: "request methods testcase with functions"
+    base_url: "http://127.0.0.1:5000"
+
+teststeps:
+-
+    name: test single match
+    variables:
+        name: 李四
+    request:
+        method: GET
+        url: /queryresult
+        params:
+            name: $name
+    validate:
+        - eq: ["status_code", 200]
+        - eq: [content.return_info, 'success!']
+
+-
+    name: test two match
+    variables:
+        name: 张
+    request:
+        method: GET
+        url: /queryresult
+        params:
+            name: $name
+    validate:
+        - eq: ["status_code", 200]
+        - eq: [content.return_info, 'success!']
+        - eq: [content.result.0.name, '张三']
+        - eq: [content.result.1.name, '张无忌']
+
+-
+    name: test not supporting request method
+    variables:
+        name: 张
+    request:
+        method: POST
+        url: /queryresult
+        params:
+            name: $name
+    validate:
+        - eq: [content.return_info, 'Bad request method!']
+        - eq: [content.result, false]
+        - eq: [content.return_code, 404]
+
+-
+    name: test param is null
+    request:
+        method: GET
+        url: /queryresult
+    validate:
+        - eq: [content.return_info, 'Please input word wanted to be query!' ]
+        - eq: [content.result, false]
+        - eq: [content.return_code, 200]
+
+-
+    name: test english param
+    variables:
+        name: wangwu
+    request:
+        method: GET
+        url: /queryresult
+        params:
+            name: $name
+    validate:
+        - eq: ["status_code", 200]
+        - eq: [content.return_info, 'success!']
+        - eq: [content.result.0.name, $name]
+
+
+
+
